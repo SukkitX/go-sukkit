@@ -69,18 +69,18 @@ func main() {
 // Get the required files based on the user's OS
 func getFiles() map[string]string {
 	suffix := "sh"
-	php := "https://jenkins.pmmp.io/job/PHP-7.3-Aggregate/lastSuccessfulBuild/artifact/PHP-7.3-Linux-x86_64.tar.gz"
+	php := "https://jenkins.pmmp.io/job/PHP-7.4-Aggregate/lastSuccessfulBuild/artifact/PHP-7.4-Linux-x86_64.tar.gz"
 	if runtime.GOOS == "windows" {
 		suffix = "ps1"
-		php = "https://jenkins.pmmp.io/job/PHP-7.3-Aggregate/lastSuccessfulBuild/artifact/PHP-7.3-Windows-x64.zip"
+		php = "https://jenkins.pmmp.io/job/PHP-7.4-Aggregate/lastSuccessfulBuild/artifact/PHP-7.4-Windows-x64.zip"
 	}
 	if runtime.GOOS == "darwin" {
-		php = "https://jenkins.pmmp.io/job/PHP-7.3-Aggregate/lastSuccessfulBuild/artifact/PHP-7.3-MacOS-x86_64.tar.gz"
+		php = "https://jenkins.pmmp.io/job/PHP-7.4-Aggregate/lastSuccessfulBuild/artifact/PHP-7.4-MacOS-x86_64.tar.gz"
 	}
 	m := make(map[string]string)
 	m["php"] = php
-	m["PocketMine-MP.phar"] = "https://github.com/pmmp/PocketMine-MP/releases/download/3.14.2/PocketMine-MP.phar"
-	m["start."+suffix] = "https://github.com/pmmp/PocketMine-MP/releases/download/3.14.2/start." + suffix
+	m["PocketMine-MP.phar"] = "https://jenkins.pmmp.io/job/PocketMine-MP/lastStableBuild/artifact/PocketMine-MP.phar"
+	m["start."+suffix] = "https://jenkins.pmmp.io/job/PocketMine-MP/lastStableBuild/artifact/start." + suffix
 	return m
 }
 
@@ -137,6 +137,8 @@ func downloadFile(p *mpb.Progress, url string, filename string) error {
 	if err := os.Rename(filename+".tmp", filename); err != nil {
 		return err
 	}
+
+	os.Chmod(filename, 0755)
 	return nil
 }
 
